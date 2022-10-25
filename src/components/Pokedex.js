@@ -25,13 +25,25 @@ class Pokedex extends React.Component {
   }
 
   fowardPokemonEv() {
-    this.setState(
-      (prevState) => (
-        {
-          valor: prevState.valor + 1,
-        }
-      ),
-    );
+    const { valor } = this.state;
+    const { pokemonList } = this.props;
+    if (valor < pokemonList.length - 1) {
+      this.setState(
+        (prevState) => (
+          {
+            valor: prevState.valor + 1,
+          }
+        ),
+      );
+    } else {
+      this.setState(
+        () => (
+          {
+            valor: 0,
+          }
+        ),
+      );
+    }
   }
 
   render() {
@@ -42,7 +54,7 @@ class Pokedex extends React.Component {
         <h1> Pokédex </h1>
         <div className="pokedex">
           <Pokemon pokemon={ pokemonList[valor] } />
-          <button type="button" name="Próximo pokémon" onClick={ this.fowardPokemonEv }>
+          <button type="button" onClick={ this.fowardPokemonEv }>
             Próximo pokémon
           </button>
           <button type="button" onClick={ this.backwardPokemonEv }>Previous</button>
