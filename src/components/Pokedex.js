@@ -1,32 +1,44 @@
 import React from 'react';
-import { arrayOf } from 'prop-types';
 
 import Pokemon from './Pokemon';
-import { pokemonType } from '../types';
+import pokemons from '../data';
 
 class Pokedex extends React.Component {
   constructor() {
     super();
     this.state = {
       valor: 0,
+      pokemonList: pokemons,
     };
     this.fowardPokemonEv = this.fowardPokemonEv.bind(this);
     this.backwardPokemonEv = this.backwardPokemonEv.bind(this);
+    this.firePokemonEv = this.firePokemonEv.bind(this);
+    this.psychicPokemonEv = this.psychicPokemonEv.bind(this);
   }
 
   backwardPokemonEv() {
-    this.setState(
-      (prevState) => (
-        {
-          valor: prevState.valor - 1,
-        }
-      ),
-    );
+    const { valor, pokemonList } = this.state;
+    if (valor !== 0) {
+      this.setState(
+        (prevState) => (
+          {
+            valor: prevState.valor - 1,
+          }
+        ),
+      );
+    } else {
+      this.setState(
+        () => (
+          {
+            valor: pokemonList.length - 1,
+          }
+        ),
+      );
+    }
   }
 
   fowardPokemonEv() {
-    const { valor } = this.state;
-    const { pokemonList } = this.props;
+    const { valor, pokemonList } = this.state;
     if (valor < pokemonList.length - 1) {
       this.setState(
         (prevState) => (
@@ -46,9 +58,36 @@ class Pokedex extends React.Component {
     }
   }
 
+  firePokemonEv() {
+    const { pokemonList } = this.state;
+    const filteredPokemonsByFireType = pokemonList
+      .filter((pokemon) => pokemon.type === 'Fire');
+    this.setState(
+      () => (
+        {
+          valor: 0,
+          pokemonList: filteredPokemonsByFireType,
+        }
+      ),
+    );
+  }
+
+  psychicPokemonEv() {
+    const { pokemonList } = this.state;
+    const filteredPokemonsByPsychicType = pokemonList
+      .filter((pokemon) => pokemon.type === 'Psychic');
+    this.setState(
+      () => (
+        {
+          valor: 0,
+          pokemonList: filteredPokemonsByPsychicType,
+        }
+      ),
+    );
+  }
+
   render() {
-    const { pokemonList } = this.props;
-    const { valor } = this.state;
+    const { valor, pokemonList } = this.state;
     return (
       <>
         <h1> Pokédex </h1>
@@ -57,7 +96,15 @@ class Pokedex extends React.Component {
           <button type="button" onClick={ this.fowardPokemonEv }>
             Próximo pokémon
           </button>
-          <button type="button" onClick={ this.backwardPokemonEv }>Previous</button>
+          <button type="button" onClick={ this.backwardPokemonEv }>
+            Pokémon anterior
+          </button>
+          <button type="button" onClick={ this.firePokemonEv }>
+            Fire
+          </button>
+          <button type="button" onClick={ this.psychicPokemonEv }>
+            Psychic
+          </button>
         </div>
       </>
     );
@@ -66,10 +113,6 @@ class Pokedex extends React.Component {
 
 Pokedex.defaultProps = {
   pokemonList: [],
-};
-
-Pokedex.propTypes = {
-  pokemonList: arrayOf(pokemonType),
 };
 
 export default Pokedex;
