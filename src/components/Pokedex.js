@@ -14,6 +14,7 @@ class Pokedex extends React.Component {
     this.backwardPokemonEv = this.backwardPokemonEv.bind(this);
     this.firePokemonEv = this.firePokemonEv.bind(this);
     this.psychicPokemonEv = this.psychicPokemonEv.bind(this);
+    this.backToNormal = this.backToNormal.bind(this);
   }
 
   backwardPokemonEv() {
@@ -59,8 +60,7 @@ class Pokedex extends React.Component {
   }
 
   firePokemonEv() {
-    const { pokemonList } = this.state;
-    const filteredPokemonsByFireType = pokemonList
+    const filteredPokemonsByFireType = pokemons
       .filter((pokemon) => pokemon.type === 'Fire');
     this.setState(
       () => (
@@ -73,14 +73,24 @@ class Pokedex extends React.Component {
   }
 
   psychicPokemonEv() {
-    const { pokemonList } = this.state;
-    const filteredPokemonsByPsychicType = pokemonList
+    const filteredPokemonsByPsychicType = pokemons
       .filter((pokemon) => pokemon.type === 'Psychic');
     this.setState(
       () => (
         {
           valor: 0,
           pokemonList: filteredPokemonsByPsychicType,
+        }
+      ),
+    );
+  }
+
+  backToNormal() {
+    this.setState(
+      () => (
+        {
+          valor: 0,
+          pokemonList: pokemons,
         }
       ),
     );
@@ -99,11 +109,23 @@ class Pokedex extends React.Component {
           <button type="button" onClick={ this.backwardPokemonEv }>
             Pokémon anterior
           </button>
-          <button type="button" onClick={ this.firePokemonEv }>
+          <button
+            type="button"
+            onClick={ this.firePokemonEv }
+          >
             Fire
           </button>
-          <button type="button" onClick={ this.psychicPokemonEv }>
+          <button
+            type="button"
+            onClick={ this.psychicPokemonEv }
+          >
             Psychic
+          </button>
+          <button
+            type="button"
+            onClick={ this.backToNormal }
+          >
+            All
           </button>
         </div>
       </>
